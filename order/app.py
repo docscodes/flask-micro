@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-
+from routes import order_blueprint
 
 app = Flask(__name__)
 
@@ -10,6 +10,9 @@ database_path = os.path.join(os.path.dirname(__file__), 'database/order.db')
 app.config['SECRET_KEY'] = "pSaOCtBJ90oNkW9nigTXAw"
 app.config['SQLALCHEMY_DATABASE_URI']=f'sqlite:///{database_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+app.register_blueprint(order_blueprint)
 
 
 if __name__ == '__main__':
