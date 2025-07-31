@@ -61,3 +61,28 @@ def login():
 
     response = {'message': 'Access denied'}
     return make_response(jsonify(response), 401)
+
+
+@user_blueprint.route('/logout', methods=['POST'])
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify({'message': 'logged out'})
+    return jsonify({'message': 'No user logged in'}), 401
+
+
+@user_blueprint.route('/<username>/exists', methods=['GET'])
+def user_exists(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({"result": True}), 200
+
+    return jsonify({"result": False}), 404
+
+
+@user_blueprint.route('/', methods=['GET'])
+def get_current_user():
+    if current_user.is_authenticated:
+        return jsonify({'result': current_user.serialize()}), 200
+    else:
+        return jsonify({'message': "User not logged in"}), 401
