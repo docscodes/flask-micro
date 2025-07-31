@@ -1,6 +1,9 @@
 import os
 from flask import Flask
 from routes import order_blueprint
+from models import init_app, db
+from flask_migrate import Migrate
+
 
 app = Flask(__name__)
 
@@ -13,6 +16,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 app.register_blueprint(order_blueprint)
+init_app(app)
+migrate = Migrate(app, db)
 
 
 if __name__ == '__main__':
