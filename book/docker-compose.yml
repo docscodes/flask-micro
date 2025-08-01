@@ -1,0 +1,15 @@
+version: "3.12-slim"
+
+volumes:
+  bookapp:
+
+services:
+  book-service:
+    container_name: book-service-container
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - bookapp:/bookapp
+    restart: always

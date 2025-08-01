@@ -1,0 +1,15 @@
+version: "3.12-slim"
+
+volumes:
+  frontendapp:
+
+services:
+  frontend-service:
+    container_name: frontend-service-container
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - frontendapp:/frontendapp
+    restart: always
