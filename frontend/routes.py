@@ -8,6 +8,17 @@ import forms
 blueprint = Blueprint('frontend', __name__)
 
 
+@blueprint.context_processor
+def cart_count():
+    count = 0
+    order = session.get('order')
+    if order:
+        for item in order.get('order_items'):
+            count += item['quantity']
+
+    return {'cart_items': count}
+
+
 @blueprint.route('/', methods=['GET'])
 def index():
     if current_user.is_authenticated:
