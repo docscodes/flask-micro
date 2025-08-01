@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
+from routes import blueprint
 
 
 app = Flask(__name__, static_folder='static')
@@ -9,6 +10,7 @@ app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = 'KwsJpGfCDlcP77okfHAtpbo-F_c'
 app.config['WTF_CSRF_SECRET_KEY'] = 'yLnLKAJ3UuK8cEqmNucvLAuusjY'
 app.config['UPLOAD_FOLDER'] = 'static/images'
+app.register_blueprint(blueprint)
 
 
 login_manager = LoginManager(app)
