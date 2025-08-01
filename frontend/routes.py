@@ -40,3 +40,35 @@ def register():
             flash("Errors")
 
     return render_template('register.html', form=form)
+
+
+@blueprint.route('/login', methods=['GET', 'POST'])
+def login():
+    form = forms.LoginForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            api_key = UserClient.login(form)
+            if api_key:
+                session['user_api_key'] = api_key
+                user = UserClient.get_user()
+                session['user'] = user['result']
+
+                order = OrderClient.get_order()
+                if order.get('result'):
+                    session['order'] = order['result']
+
+                flash('Welcome back')
+                return redirect(url_for('frontend.index'))
+            else:
+                flash('Cannot Login')
+        else:
+            flash('Cannot Login')
+
+    return render_template('login.html', form=form)
+
+
+@blueprint.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    flash('Logged out')
+    return redirect(url_for('frontend.index'))
