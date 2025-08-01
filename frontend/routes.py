@@ -72,3 +72,22 @@ def logout():
     session.clear()
     flash('Logged out')
     return redirect(url_for('frontend.index'))
+
+
+@blueprint.route('/book/<slug>', methods=['GET', 'POST'])
+def book_details(slug):
+    response = BookClient.get_book(slug)
+    book = response['result']
+
+    form = forms.ItemForm(book_id=book['id'])
+
+    if request.method == 'POST':
+        if 'user' not in session:
+            flash("Please Login")
+            return redirect(url_for('frontend.login'))
+
+        order = OrderClient.add_to_cart(book_id=book['id'], quantity=1)
+        session['order'] = order['result']
+        flash("Book added to the cart")
+
+    return render_template('book_info.html', book=book, form=form)
