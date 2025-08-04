@@ -5,9 +5,17 @@ from routes import user_blueprint
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask.sessions import SecureCookieSessionInterface
+from flasgger import Swagger
 
 
 app = Flask(__name__)
+swagger = Swagger(app, template={
+    "info": {
+        "title": "flask-micro-user",
+        "description": "User API for flask-micro",
+        "version": "1.0.0"
+    }
+})
 
 database_path = os.path.join(os.path.dirname(__file__), 'database/user.db')
 
